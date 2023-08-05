@@ -71,7 +71,7 @@ export async function decodeFetchResponse(response: Response, isHTML = false) {
     return content
 }
 
-export async function parseRSS(url: string) {
+export async function parseSingleRSS(url: string) {
     let result: Response
     try {
         result = await fetch(url, { credentials: "omit" })
@@ -88,6 +88,27 @@ export async function parseRSS(url: string) {
         }
     } else {
         throw new Error(result.status + " " + result.statusText)
+    }
+}
+
+const rsshubList: string[] = [
+    "http://127.0.0.1:1200",
+    "https://rsshub.app"
+]
+
+export async function parseRSS(url: string) {
+    if (url.startsWith("rsshub:")) {
+        for (let rsshub of rsshubList) {
+            let rsshubURL: string = url.replace("rsshub:", rsshub);
+            try {
+                return await parseSingleRSS(rsshubURL);
+            } catch {
+
+            }
+        }
+        throw new Error("Fail to get content from RSSHub");
+    } else {
+        return await parseSingleRSS(url);
     }
 }
 
@@ -148,7 +169,7 @@ export function htmlDecode(input: string) {
 }
 
 export const urlTest = (s: string) =>
-    /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,63}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi.test(
+    /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,63}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))|(rsshub:\/*)/gi.test(
         s
     )
 
