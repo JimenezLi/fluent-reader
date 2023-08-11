@@ -146,6 +146,10 @@ class SourcesTab extends React.Component<SourcesTabProps, SourcesTabState> {
         { key: "360", text: intl.get("time.hour", { h: 6 }) },
         { key: "720", text: intl.get("time.hour", { h: 12 }) },
         { key: "1440", text: intl.get("time.day", { d: 1 }) },
+        { key: "2880", text: intl.get("time.day", { d: 2 }) },
+        { key: "4320", text: intl.get("time.day", { d: 3 }) },
+        { key: "10080", text: intl.get("time.day", { d: 7 }) },
+        { key: "20160", text: intl.get("time.day", { d: 14 }) },
     ]
 
     onFetchFrequencyChange = (_, option: IDropdownOption) => {
